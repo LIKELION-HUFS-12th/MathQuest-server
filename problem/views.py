@@ -36,14 +36,14 @@ class UserProblemCreateView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user  # 현재 사용자
         problem_id = request.data.get('problem_id')
-        status = request.data.get('status')
+        user_status = request.data.get('status')
 
         try:
             problem = Problem.objects.get(id=problem_id)
             user_problem, created = UserProblem.objects.update_or_create(
                 user=user,
                 problem=problem,
-                defaults={'status': status},
+                defaults={'status': user_status},
             )
             return Response({"message": "상태 업데이트 성공"}, status=status.HTTP_200_OK)
         except Problem.DoesNotExist:
