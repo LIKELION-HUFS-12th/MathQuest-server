@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+def delete(request):
+    request.user.delete()
+    auth_logout(request)
+    return redirect('articles;index')
