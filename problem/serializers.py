@@ -6,3 +6,4 @@ class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         fields = '__all__'  # 모든 필드를 포함
+
