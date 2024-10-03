@@ -44,6 +44,7 @@ class UserProblemCreateView(generics.CreateAPIView):
                 user=user,
                 problem=problem,
                 defaults={'status': user_status},
+                
             )
             return Response({"message": "상태 업데이트 성공"}, status=status.HTTP_200_OK)
         except Problem.DoesNotExist:
