@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import CustomUser
+from django.utils import timezone
+
 # Create your models here.
 class Problem(models.Model):
     STATUS_CHOICES = [
@@ -25,3 +27,12 @@ class UserProblem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=Problem.STATUS_CHOICES)
+
+class DailyScore(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    correct_answers = models.IntegerField(default=0)
+    incorrect_answers = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('user', 'date')
