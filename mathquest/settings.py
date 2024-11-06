@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
-
+from decouple import config
 ACCOUNT_EMAIL_VERIFICATION = 'none' 
 ACCOUNT_EMAIL_REQUIRED = False 
 
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-4gcoi2#4457nh)9@5#!^4+u$aq-zx!0uy5i+!uqykgq^@7hm_m"
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

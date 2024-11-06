@@ -13,3 +13,5 @@ def delete(request):
         return JsonResponse({'message': '회원 탈퇴가 완료되었습니다.'}, status=204)
     else:
         return JsonResponse({'error': '로그인이 필요합니다.'}, status=403)  # 로그인 안된 경우 에러 메시지
+    
+
