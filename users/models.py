@@ -8,4 +8,4 @@ class CustomUser(AbstractUser):
     name = models.CharField(max_length=100)
     school = models.CharField(max_length=100)
     grade = models.CharField(max_length=100)
-    proceed = models.IntegerField(default=0)
+
