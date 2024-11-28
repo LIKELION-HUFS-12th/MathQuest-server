@@ -7,7 +7,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     birthdate = serializers.CharField(max_length=100)
     school = serializers.CharField(max_length=50)
     grade = serializers.CharField(max_length=50)
-    proceed = serializers.CharField(max_length=50)
+   
     
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
@@ -19,7 +19,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'birthdate': self.validated_data.get('birthdate', ''),
             'school': self.validated_data.get('school', ''),
             'grade': self.validated_data.get('grade', ''),
-            'proceed': self.validated_data.get('proceed', ''),
+            
         }
     
     def save(self, request):
@@ -31,7 +31,6 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.birthdate = self.cleaned_data.get('birthdate')
         user.school = self.cleaned_data.get('school')
         user.grade = self.cleaned_data.get('grade')
-        user.proceed = self.cleaned_data.get('proceed')
         user.save()
         adapter.save_user(request, user, self)
         return user
