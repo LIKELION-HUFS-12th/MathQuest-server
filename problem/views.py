@@ -350,3 +350,47 @@ class MonthlyAttendanceView(APIView):
                 "attendance": monthly_attendance
             }
         )
+    
+
+
+class UnsolvedProblemsByFiltersAPIView(APIView):
+    """
+    학년, 단원, 난이도를 기준으로 안 푼 문제만 반환
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, level, chapter, difficulty, *args, **kwargs):
+        user = request.user
+
+        # 안 푼 문제 필터링
+        unsolved_problems = Problem.objects.filter(
+            level=level,
+            chapter=chapter,
+            difficulty=difficulty
+        ).exclude(
+            userproblem__user=user
+        ) | Problem.objects.filter(
+            level=level,
+            chapter=chapter,
+            difficulty=difficulty,
+            userproblem__user=user,
+            userproblem__status='YET'
+        )
+
+        # 결과가 있는지 확인
+        if unsolved_problems.exists():
+            serializer = ProblemSerializer(unsolved_problems.distinct(), many=True)
+            return custom_response(
+                code=200,
+                msg="안 푼 문제가 성공적으로 조회되었습니다.",
+                data=serializer.data,
+                status_code=status.HTTP_200_OK
+            )
+
+        # 결과가 없는 경우
+        return custom_response(
+            code=404,
+            msg="해당 조건의 안 푼 문제가 없습니다.",
+            data=[],
+            status_code=status.HTTP_404_NOT_FOUND
+        )

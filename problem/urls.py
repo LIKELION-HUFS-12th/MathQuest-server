@@ -13,5 +13,10 @@ urlpatterns = [
     path('reports/weekly/', WeeklyReportView.as_view(), name='weekly_report'),
     path('chapter_difficulty/<str:level>/<str:difficulty>/', ProblemsByChapterAndDifficultyAPIView.as_view(), name='problems_by_chapter_difficulty'),
     path('attendance/<int:year>/<int:month>/', MonthlyAttendanceView.as_view(), name='monthly_attendance'),
+    path(
+        'level_chapter_difficulty/<str:level>/<str:chapter>/<str:difficulty>/',
+        UnsolvedProblemsByFiltersAPIView.as_view(),
+        name='unsolved_problems_by_filters'
+    ),
 ]
 
