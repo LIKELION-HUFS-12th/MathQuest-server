@@ -1,9 +1,9 @@
 
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
 
-@require_POST
+@require_http_methods(["DELETE"])
 def delete(request):
     if request.user.is_authenticated:  # 로그인 상태 확인
         request.user.delete()  # 사용자 삭제
