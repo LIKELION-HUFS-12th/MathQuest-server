@@ -38,3 +38,32 @@ class CustomUserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'name', 'birthdate', 'school', 'grade']
+
+
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'name', 'school', 'grade']
+
+    def update(self, instance, validated_data):
+        # Username 업데이트
+        instance.username = validated_data.get('username', instance.username)
+        
+        # Password 업데이트
+        password = validated_data.get('password', None)
+        if password:
+            instance.set_password(password)
+
+        # Name, School, Grade 업데이트
+        instance.name = validated_data.get('name', instance.name)
+        instance.school = validated_data.get('school', instance.school)
+        instance.grade = validated_data.get('grade', instance.grade)
+        
+        instance.save()
+        return instance
