@@ -5,4 +5,5 @@ app_name = 'user'
 urlpatterns = [
     path('delete/', delete, name='delete_account'),
     path('auth/username-check/', UsernameCheckView.as_view(), name='username_check'),
+    path('update/', UserUpdateView.as_view(), name='user_update'),
 ]

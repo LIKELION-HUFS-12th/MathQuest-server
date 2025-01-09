@@ -50,3 +50,34 @@ class UsernameCheckView(APIView):
             data={"is_available": True},
             status_code=status.HTTP_200_OK
         )
+
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import UserUpdateSerializer
+
+
+class UserUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data, partial=False)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return custom_response(
+                code=200,
+                msg="회원 정보가 성공적으로 수정되었습니다.",
+                data=serializer.data,
+                status_code=status.HTTP_200_OK
+            )
+        
+        return custom_response(
+            code=400,
+            msg="회원 정보 수정 중 오류가 발생했습니다.",
+            data=serializer.errors,
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
