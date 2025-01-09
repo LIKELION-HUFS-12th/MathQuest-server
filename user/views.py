@@ -1,23 +1,42 @@
 
-from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-
-@require_http_methods(["DELETE"])
-def delete(request):
-    if request.user.is_authenticated:  # 로그인 상태 확인
-        request.user.delete()  # 사용자 삭제
-        logout(request)  # 세션 로그아웃
-        return JsonResponse({'message': '회원 탈퇴가 완료되었습니다.'}, status=204)
-    else:
-        return JsonResponse({'error': '로그인이 필요합니다.'}, status=403)
-
-
+from django.contrib.auth import logout
+import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from utils.response import custom_response
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserUpdateSerializer
+
+@require_http_methods(["DELETE"])
+def delete(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': '로그인이 필요합니다.'}, status=403)
+
+    try:
+        # 요청 본문에서 JSON 데이터 읽기
+        body = json.loads(request.body)
+        password = body.get('password')
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({'error': '비밀번호가 필요합니다.'}, status=400)
+
+    if not password:
+        return JsonResponse({'error': '비밀번호가 필요합니다.'}, status=400)
+
+    # 비밀번호 확인
+    if not request.user.check_password(password):
+        return JsonResponse({'error': '비밀번호가 일치하지 않습니다.'}, status=400)
+
+    # 비밀번호가 일치하면 회원 탈퇴 처리
+    request.user.delete()
+    logout(request)  # 세션 로그아웃
+    return JsonResponse({'message': '회원 탈퇴가 완료되었습니다.'}, status=204)
+
+
+
 
 User = get_user_model()
 
@@ -52,11 +71,6 @@ class UsernameCheckView(APIView):
         )
 
 
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import UserUpdateSerializer
 
 
 class UserUpdateView(APIView):

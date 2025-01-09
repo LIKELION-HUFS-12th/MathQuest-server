@@ -1,14 +1,16 @@
-
-from .models import Problem
-from .serializers import ProblemSerializer
+from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
-from  utils.response import custom_response
-from rest_framework.permissions import IsAuthenticated
-from .models import UserProblem, Problem, DailyScore, Attendance
+from utils.response import custom_response
+from .models import *
 from django.utils import timezone
 from calendar import monthrange
+from django.utils import timezone
+from rest_framework.permissions import IsAuthenticated
+from django.utils.timezone import now, timedelta
+from datetime import date, timedelta
+
 
 class ProblemCreateView(generics.CreateAPIView):
     queryset = Problem.objects.all()
@@ -104,11 +106,7 @@ class LearningOptionsView(APIView):
             },
             status_code=200
         )
-    from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from utils.response import custom_response
-from .models import UserProblem, Problem, DailyScore
-from django.utils import timezone
+    
 
 class UserProblemStatusUpdateView(APIView):
     permission_classes = [IsAuthenticated]
@@ -199,11 +197,7 @@ class WrongProblemsAPIView(APIView):
             status_code=status.HTTP_404_NOT_FOUND
         )
     
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from utils.response import custom_response
-from .models import UserProblem, Problem
-from .serializers import ProblemSerializer
+
 
 class WrongNotesByChapterView(APIView):
     permission_classes = [IsAuthenticated]
@@ -238,11 +232,7 @@ class WrongNotesByChapterView(APIView):
                 status_code=404
             )
 
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from utils.response import custom_response
-from .models import DailyScore
-from django.utils.timezone import now, timedelta
+
 
 class WeeklyReportView(APIView):
     permission_classes = [IsAuthenticated]
@@ -304,8 +294,6 @@ class ProblemsByChapterAndDifficultyAPIView(APIView):
             data=[]
         )
     
-from datetime import date, timedelta
-from django.utils.timezone import now
 
 class MonthlyAttendanceView(APIView):
     """
