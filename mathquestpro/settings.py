@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # dj-rest-auth
     'dj_rest_auth',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 SITE_ID = 1
 
