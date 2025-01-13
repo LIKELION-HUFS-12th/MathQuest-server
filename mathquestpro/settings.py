@@ -20,12 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-)4mq#tpv25p3(*8^ui^we#y!i%qlm-i=1wgy2pifvxu)48$paa"
+
+# settings.py
+from decouple import config
+
+SECRET_KEY = config('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['52.62.54.42','mathquestpro.shop','127.0.0.1']
 
 
 # Application definition
@@ -95,9 +100,13 @@ WSGI_APPLICATION = "mathquestpro.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'), # DB(스키마) 이름
+        'USER': config('DB_USER'), # 유저 이름 (root)
+        'PASSWORD': config('DB_PASSWORD'), # DB 비밀번호
+        'HOST': config('DB_HOST'), # DB 엔드포인트
+        'PORT': 3306,
     }
 }
 
@@ -219,3 +228,11 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000"]
 
 CORS_ALLOW_CREDENTIALS = True
+
+ACCOUNT_USER_MODEL_EMAIL_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = False
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
