@@ -167,7 +167,7 @@ class UserProblemStatusUpdateView(APIView):
                 msg="해당 아이디의 문제가 없습니다.",
                 data=None
             )
-    
+
 class WrongProblemsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -196,7 +196,6 @@ class WrongProblemsAPIView(APIView):
             data=[],
             status_code=status.HTTP_404_NOT_FOUND
         )
-    
 
 
 class WrongNotesByChapterView(APIView):
