@@ -57,7 +57,7 @@ class UsernameCheckView(APIView):
         if User.objects.filter(username=username).exists():
             return custom_response(
                 code=409,
-                msg="이미 사용중인 아이디 입니다다.",
+                msg="이미 사용중인 아이디 입니다.",
                 data={"is_available": False},
                 status_code=status.HTTP_409_CONFLICT
             )
@@ -65,7 +65,7 @@ class UsernameCheckView(APIView):
         # 사용 가능한 아이디
         return custom_response(
             code=200,
-            msg="사용 가능한 아이디 입니다다.",
+            msg="사용 가능한 아이디 입니다.",
             data={"is_available": True},
             status_code=status.HTTP_200_OK
         )
